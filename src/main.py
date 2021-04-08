@@ -2,7 +2,7 @@
 import time
 import datetime
 
-import MyMQTT as myqtt
+from MyMQTT.src import MyMQTT as myqtt
 import SecretsYaml as secrets
 
 ##########################################################################################

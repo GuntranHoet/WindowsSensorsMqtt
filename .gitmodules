@@ -1,0 +1,3 @@
+[submodule "src/MyMQTT"]
+	path = src/MyMQTT
+	url = https://github.com/GuntranHoet/MyMQTT.git
