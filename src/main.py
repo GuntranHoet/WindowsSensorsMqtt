@@ -51,8 +51,9 @@ client.start()
 print("> setup complete.")
 
 # Call functions & loop
-heartbeat()
-time.sleep(3)
+while True:
+    heartbeat()
+    time.sleep(60*5) #5 minutes
 
 # End of program, clean shutdown
 print("> stopping program.")
