@@ -3,7 +3,7 @@ import time
 import datetime
 
 from MyMQTT.src import MyMQTT as myqtt
-import SecretsYaml as secrets
+from YamlSecrets.src import YamlSecrets as secrets
 
 ##########################################################################################
 
@@ -38,7 +38,7 @@ def heartbeat():
 
 # Load secret values from yaml file
 # This is to hide personal data from the public repo
-s = secrets.SecretsYaml("../secrets/secrets.yaml")
+s = secrets.YamlSecrets("../../../secrets/secrets.yaml") # additional '../../' since its a submodule
 name = s.find("name")
 host = s.find("host")
 user = s.find("user")

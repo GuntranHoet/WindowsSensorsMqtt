@@ -1,3 +1,6 @@
 [submodule "src/MyMQTT"]
 	path = src/MyMQTT
 	url = https://github.com/GuntranHoet/MyMQTT.git
+[submodule "src/YamlSecrets"]
+	path = src/YamlSecrets
+	url = https://github.com/GuntranHoet/YamlSecrets.git
