@@ -112,4 +112,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-secrets/secrets.yaml
+
+# custom
+secrets/
+compiler/*
+!compiler/compile.bat
+
