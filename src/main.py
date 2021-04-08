@@ -38,7 +38,7 @@ def heartbeat():
 
 # Load secret values from yaml file
 # This is to hide personal data from the public repo
-s = secrets.YamlSecrets("../../../secrets/secrets.yaml") # additional '../../' since its a submodule
+s = secrets.YamlSecrets("C:\Python\Projects\WindowsSensorsMqtt\secrets\secrets.yaml")
 name = s.find("name")
 host = s.find("host")
 user = s.find("user")
