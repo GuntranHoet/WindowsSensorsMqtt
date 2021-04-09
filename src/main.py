@@ -43,24 +43,10 @@ def heartbeat():
     import datetime
 
     SUB_HEARTBEAT = DOMAIN + "/heartbeat"
-    TOPIC_HB_DATE = SUB_HEARTBEAT + "/date"
-    TOPIC_HB_TIME = SUB_HEARTBEAT + "/time"
-    TOPIC_HB_PING = SUB_HEARTBEAT + "/ping"
+    TOPIC_PING = SUB_HEARTBEAT + "/ping"
 
     print("> heartbeat...")
-
-    x = datetime.datetime.now()
-    print("  > datetime (raw):", x)
-
-    outDate = str(x.strftime("%Y-%m-%d")) # 2020/12/30
-    print("  > date:", outDate)
-    client.publish(TOPIC_HB_DATE, outDate)
-
-    outTime = str(x.strftime("%H:%M:%S")) # 23:01:01
-    client.publish(TOPIC_HB_TIME, outTime)
-    print("  > time:", outTime)
-
-    client.publish(TOPIC_HB_PING, "")
+    client.publish(TOPIC_PING, "")
 
 
 def storage():
