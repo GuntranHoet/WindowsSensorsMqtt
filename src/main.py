@@ -84,7 +84,7 @@ def storage():
         diskName = d.Caption.replace(":", "")
         print("  > disk:", diskName)
 
-        SUB_DRIVE = SUB_STORAGE + diskName
+        SUB_DRIVE = SUB_STORAGE + diskName.lower()
         to_gigabytes = 1 / 1024 / 1024 / 1024
 
         value = int(d.Size) * to_gigabytes
