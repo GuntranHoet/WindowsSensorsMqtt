@@ -114,7 +114,7 @@ dmypy.json
 .pyre/
 
 # custom
-secrets/
+secrets/secrets.yaml
 compiler/*
 !compiler/compile.bat
 
