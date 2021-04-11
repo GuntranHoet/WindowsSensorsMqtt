@@ -93,6 +93,7 @@ time.sleep(1)
 
 while True:
     heartbeat()
+    storage()
     time.sleep(60*5)
 
 stop()
