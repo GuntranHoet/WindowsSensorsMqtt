@@ -1,4 +1,5 @@
 import time
+import wmi
 
 from MyMQTT.src import MyMQTT as myqtt
 from YamlSecrets.src import YamlSecrets as secrets
@@ -7,57 +8,24 @@ from YamlSecrets.src import YamlSecrets as secrets
 
 DOMAIN = "chronosphere"
 
-client = None
+TOPIC_STATE = f"{DOMAIN}/state"
 
 ##########################################################################################
 
 
-def main():
-    # Load secret values from yaml file
-    # This is to hide personal data from the public repo
-    s = secrets.YamlSecrets("C:\Python\Projects\WindowsSensorsMqtt\secrets\secrets.yaml")
-    name = s.find("name")
-    host = s.find("host")
-    user = s.find("user")
-    pasw = s.find("pass")
-    print("Secrets:", name, host, user, pasw)
-
-    # Setup client connection
-    global client
-    client = myqtt.MyMQTT(name, host, user, pasw)
-    client.start()
-    print("> setup complete.")
-
-    # Call functions & loop
-    while True:
-        heartbeat()
-        storage()
-        time.sleep(60*5) # 5 minutes
-
-    # End of program, clean shutdown
-    print("> stopping program.")
-    client.stop()
-
-
 def heartbeat():
-    import datetime
-
-    SUB_HEARTBEAT = DOMAIN + "/heartbeat"
-    TOPIC_PING = SUB_HEARTBEAT + "/ping"
-
+    TOPIC_HEARTBEAT = f"{DOMAIN}/heartbeat"
     print("> heartbeat...")
-    client.publish(TOPIC_PING, "")
+    client.publish(TOPIC_HEARTBEAT, "")
 
 
 def storage():
-    import wmi
-
     # https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-logicaldisk
     # .Caption      : disk name
     # .Size         : disk total size
     # .FreeSpace    : available disk space
     
-    SUB_STORAGE = DOMAIN + "/storage/"
+    SUB_STORAGE = f"{DOMAIN}/storage/"
     TOPIC_TOTAL = "/total"
     TOPIC_USED = "/used"
     TOPIC_FREE = "/free"
@@ -89,6 +57,42 @@ def storage():
         print("    >", diskName, "percent:", value)
         client.publish(SUB_DRIVE + TOPIC_PERCENT, value)
 
+
+def stop():
+    # cleanly exists the program
+    # (this does not trigger the 'last will' of the mqtt client)
+    print("[ TERMINATING ... ]")
+    client.publish(TOPIC_STATE, "off")
+    time.sleep(1)
+    client.stop()
+    print("[ TERMINATED ]")
+
+
 ##########################################################################################
 
-main()
+
+print("[ SETTING-UP ... ]")
+# Load secret values from yaml file
+# This is to hide personal data from the public repo
+s = secrets.YamlSecrets("C:\Python\Projects\WindowsSensorsMqtt\secrets\secrets.yaml")
+name = s.find("name")
+host = s.find("host")
+user = s.find("user")
+pasw = s.find("pass")
+print("Secrets:", name, host, user, pasw)
+
+# Setup client connection
+client = myqtt.MyMQTT(name, host, user, pasw)
+client.setup_setLastWill(TOPIC_STATE, "off")
+client.start()
+print("[ SET-UP COMPLETE ]")
+
+# Main loop
+client.publish(TOPIC_STATE, "on")
+time.sleep(1)
+
+while True:
+    heartbeat()
+    time.sleep(60*5)
+
+stop()
