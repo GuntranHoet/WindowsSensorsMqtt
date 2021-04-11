@@ -16,6 +16,7 @@ TOPIC_STATE = f"{DOMAIN}/state"
 def heartbeat():
     TOPIC_HEARTBEAT = f"{DOMAIN}/heartbeat"
     print("> heartbeat...")
+    client.publish(TOPIC_STATE, "on")
     client.publish(TOPIC_HEARTBEAT, "")
 
 
@@ -88,9 +89,6 @@ client.start()
 print("[ SET-UP COMPLETE ]")
 
 # Main loop
-client.publish(TOPIC_STATE, "on")
-time.sleep(1)
-
 while True:
     heartbeat()
     storage()
