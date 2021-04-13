@@ -92,6 +92,6 @@ print("[ SET-UP COMPLETE ]")
 while True:
     heartbeat()
     storage()
-    time.sleep(60*5)
+    time.sleep(60*15)
 
 stop()
